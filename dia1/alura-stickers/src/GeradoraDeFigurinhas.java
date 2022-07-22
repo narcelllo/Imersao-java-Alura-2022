@@ -1,44 +1,45 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.awt.Color;
-import java.awt.Font;
-
-//import java.io.IOException;
-
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 public class GeradoraDeFigurinhas {
+    
 
-    public void cria() throws Exception{
+    public void cria(InputStream inputStream, String nomeArquivo) throws Exception {
 
         // leitura da imagem
-        BufferedImage imagemOriginal = ImageIO.read(new File("alura-stickers/entrada/image.png"));
+        // InputStream inputStream = 
+        //             new FileInputStream(new File("entrada/filme-maior.jpg"));
+        // InputStream inputStream = 
+        //                 new URL("https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@.jpg")
+        //                 .openStream();
+        BufferedImage imagemOriginal = ImageIO.read(inputStream);
 
-        // cria nova imagem transparente e com tamanho novo 
+        // cria nova imagem em memória com transparência e com tamanho novo
         int largura = imagemOriginal.getWidth();
-        int altura =  imagemOriginal.getHeight();
+        int altura = imagemOriginal.getHeight();
         int novaAltura = altura + 200;
         BufferedImage novaImagem = new BufferedImage(largura, novaAltura, BufferedImage.TRANSLUCENT);
 
-        // copia a imagem original para nova imagem (em memória)
+        // copiar a imagem original pra novo imagem (em memória)
         Graphics2D graphics = (Graphics2D) novaImagem.getGraphics();
         graphics.drawImage(imagemOriginal, 0, 0, null);
 
-        // config font
-        var fonte = new Font(Font.SERIF, Font.BOLD, 64);
+        // configurar a fonte
+        var fonte = new Font(Font.SANS_SERIF, Font.BOLD, 64);
+        graphics.setColor(Color.YELLOW);
         graphics.setFont(fonte);
 
-        // escrever frase na imaem 
-        graphics.setColor(Color.YELLOW);
-        graphics.drawString("RUIM", 100, novaAltura - 100);
-        // salvar em novo arquivo
-        ImageIO.write(novaImagem, "png", new File("alura-stickers/saida/figurinha.png"));
+        // escrever uma frase na nova imagem
+        graphics.drawString("TOPZERA", 100, novaAltura - 100);
+
+        // escrever a nova imagem em um arquivo
+        ImageIO.write(novaImagem, "png", new File(nomeArquivo));
 
     }
-    
-    public static void main(String[] args) throws Exception {
-        var geradora = new GeradoraDeFigurinhas();
-        geradora.cria();
-    }
+
 }
